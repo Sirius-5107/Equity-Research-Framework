@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "equity-research-framework"
+version = "0.1.0"
+description = "Research framework for quantitative equity screening, valuation, backtesting, and reporting."
+requires-python = ">=3.11"
+dependencies = ["pandas>=2.0", "numpy>=1.24", "scipy>=1.10", "yfinance>=0.2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

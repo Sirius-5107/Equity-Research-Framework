@@ -1,0 +1,4 @@
+initial_capital: 1000000
+transaction_cost_bps: 5
+rebalance_frequency: weekly
+risk_free_rate: 0.06
