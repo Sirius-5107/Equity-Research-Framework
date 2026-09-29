@@ -1,0 +1,15 @@
+name: nifty500_momentum_baseline
+universe: NIFTY_500
+constituent_method: point_in_time
+price_field: Adj Close
+sample_start: "2018-01-01"
+sample_end: "2026-08-31"
+rebalance_frequency: monthly
+momentum_lookback_trading_days: 252
+portfolio_size: 20
+weighting: equal_weight
+transaction_cost_bps: 5
+risk_free_rate: 0.06
+benchmark: NIFTY_500
+execution: next_period
+status: frozen
