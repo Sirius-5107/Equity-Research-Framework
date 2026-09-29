@@ -53,7 +53,9 @@ def test_weights_persist_until_next_rebalance():
     assert target.loc[index[1], "A"] == pytest.approx(1.0)
     assert target.loc[index[2], "A"] == pytest.approx(1.0)
     assert target.loc[index[3], "A"] == pytest.approx(1.0)
+    assert target.loc[index[3], "B"] == pytest.approx(0.0)
     assert target.loc[index[4], "A"] == pytest.approx(1.0)
+    assert target.loc[index[4], "B"] == pytest.approx(0.0)
 
 
 def test_backtest_applies_signal_on_next_period():
