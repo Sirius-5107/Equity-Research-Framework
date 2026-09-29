@@ -42,9 +42,9 @@ def build_target_weight_history(
     rebalance_dates: Iterable[pd.Timestamp] | None = None,
     minimum_history: int = 1,
 ) -> pd.DataFrame:
-    """Build point-in-time target weights and forward-fill between rebalances.
+    """Build point-in-time target weights and persist them until rebalance.
 
-    The signal function receives only prices through the rebalance date. No
+    The signal function receives only prices through each rebalance date. No
     future observations are passed to it. Weights are zero before the first
     valid rebalance and remain unchanged until the next rebalance.
     """
@@ -72,9 +72,13 @@ def build_target_weight_history(
         target.loc[date, weights.index] = weights
 
     # A target is a persistent portfolio instruction, not a one-day trade.
+    # Zeros at a rebalance are real positions and must not be treated as NaN.
     target = target.replace([float("inf"), float("-inf")], pd.NA).fillna(0.0)
-    target = target.mask(target.eq(0.0)).ffill().fillna(0.0)
-    return target
+    rebalance_rows = target.index.isin(dates)
+    persistent = target.copy()
+    persistent.loc[~rebalance_rows] = pd.NA
+    persistent = persistent.ffill().fillna(0.0)
+    return persistent
 
 
 def run_cross_sectional_backtest(
