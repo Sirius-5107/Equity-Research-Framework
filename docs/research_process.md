@@ -57,3 +57,35 @@ Do not describe a strategy as robust or predictive solely because one backtest p
 ## 9. Promote reusable code
 
 Move reusable mechanics into src/, keep experiment-specific assumptions and results in research/, add regression tests, and update methodology documentation.
+
+
+## 10. Dated cross-sectional workflow
+
+For cross-sectional factor research, construct signals independently at each rebalance date:
+
+1. Restrict the input data to observations available through date t.
+2. Calculate the factor for every eligible security.
+3. Rank the cross-section and select the stated top-N portfolio.
+4. Persist those target weights until the next rebalance.
+5. Let the backtest engine apply the signal at t to returns at t+1.
+6. Charge transaction costs from turnover when the target portfolio changes.
+
+The reusable `equity_research.research.cross_sectional` layer implements this workflow. Its `build_target_weight_history` function explicitly prevents future observations from reaching the signal function. The first empirical experiment should use a simple, pre-specified specification such as monthly top-20 12-month momentum before adding additional factors or parameter searches.
+
+A dated cross-sectional backtest is different from a single cross-section helper: the latter is useful for testing the factor/screening plumbing, while the former produces a full time series of historical portfolio instructions.
+
+## 11. Baseline experiment discipline
+
+For the first factor experiment, freeze the specification before looking at results. Record:
+
+- universe and constituent-source date;
+- price field and adjustment convention;
+- rebalance frequency;
+- factor lookback;
+- portfolio size;
+- weighting scheme;
+- transaction-cost assumption;
+- benchmark;
+- sample period.
+
+Only after the baseline is measured should sensitivity tests vary portfolio size, rebalance frequency, costs, or subperiods. The purpose of these tests is to assess stability rather than search for the highest historical Sharpe.
