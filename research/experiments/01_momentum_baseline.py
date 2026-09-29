@@ -23,7 +23,7 @@ def run_baseline(
     cost_rate: float = 0.0005,
     top_n: int = 20,
     lookback: int = 252,
-) -> tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
     """Run the frozen baseline and return weights plus daily backtest output."""
     target, result = run_cross_sectional_backtest(
         prices=prices,
@@ -47,7 +47,7 @@ def run_baseline(
         },
         name="Momentum12M",
     ).to_frame()
-    return target, result.join(metrics.T, how="left")
+    return target, result, metrics["Momentum12M"]
 
 
 def load_price_matrix(frame: pd.DataFrame) -> pd.DataFrame:
