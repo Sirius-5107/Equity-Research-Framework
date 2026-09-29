@@ -20,6 +20,7 @@ Universe / Market Data
 - **Screening:** eligibility filters, ranking, and configurable top-N selection.
 - **Valuation:** DCF, terminal values, peer multiples, and two-way sensitivity analysis.
 - **Backtesting:** portfolio construction, one-period signal lag, turnover, transaction costs, and performance metrics.
+- **Research runner:** dated cross-sectional signals, monthly rebalance dates, persistent target weights, and point-in-time signal generation can feed the existing lagged backtest engine.
 - **Integration:** factor scores can feed screening and target portfolio weights, which can then be passed into the backtesting engine.
 
 ## Research principles
@@ -39,6 +40,7 @@ Universe / Market Data
 - src/equity_research/valuation/ — DCF, multiples, sensitivity
 - src/equity_research/backtesting/ — execution, portfolios, costs, metrics
 - src/equity_research/research_pipeline.py — factor-to-screen-to-backtest integration
+- src/equity_research/research/ — dated cross-sectional research workflows
 - tests/ — unit tests
 - docs/ — methodology and data documentation
 - research/ — experiment-specific artifacts
@@ -46,4 +48,4 @@ Universe / Market Data
 
 ## Status
 
-Core research infrastructure is implemented through the factor → screening → valuation/backtesting stages. The next stage is to build a dated cross-sectional dataset and run a fully specified research experiment with an explicit benchmark, out-of-sample period, and robustness tests.
+Core research infrastructure now includes a reusable dated cross-sectional runner in addition to the factor → screening → valuation/backtesting stages. The next stage is to run a fully specified NIFTY 500 experiment with an explicit benchmark, out-of-sample period, and robustness tests.
