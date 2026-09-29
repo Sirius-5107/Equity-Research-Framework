@@ -43,19 +43,25 @@ def test_weights_persist_until_next_rebalance():
         {"A": [10, 11, 12, 13, 14], "B": [10, 9, 8, 7, 6]}, index=index, dtype=float
     )
 
+    def signal(history):
+        return pd.Series(
+            {"A": 1.0, "B": 0.0} if history.index[-1] == index[1]
+            else {"A": 0.0, "B": 1.0}
+        )
+
     target = build_target_weight_history(
         prices,
-        lambda history: history.iloc[-1],
+        signal,
         top_n=1,
         rebalance_dates=[index[1], index[3]],
     )
 
     assert target.loc[index[1], "A"] == pytest.approx(1.0)
     assert target.loc[index[2], "A"] == pytest.approx(1.0)
-    assert target.loc[index[3], "A"] == pytest.approx(1.0)
-    assert target.loc[index[3], "B"] == pytest.approx(0.0)
-    assert target.loc[index[4], "A"] == pytest.approx(1.0)
-    assert target.loc[index[4], "B"] == pytest.approx(0.0)
+    assert target.loc[index[3], "A"] == pytest.approx(0.0)
+    assert target.loc[index[3], "B"] == pytest.approx(1.0)
+    assert target.loc[index[4], "A"] == pytest.approx(0.0)
+    assert target.loc[index[4], "B"] == pytest.approx(1.0)
 
 
 def test_backtest_applies_signal_on_next_period():
