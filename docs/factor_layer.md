@@ -1,20 +1,31 @@
 # Factor Layer
 
-The factor layer converts cleaned market and fundamental data into research
-signals. Factor calculations are separated from cross-sectional scoring.
+The factor layer converts cleaned research inputs into interpretable cross-sectional or time-series measurements.
 
-## Factor families
+## Implemented factor families
 
-- **Value:** earnings yield, free-cash-flow yield, book-to-market.
-- **Quality:** ROE, operating margin, FCF margin, leverage.
-- **Growth:** revenue, earnings and FCF growth.
-- **Momentum:** trailing total return and cross-sectional momentum.
-- **Volatility:** annualized and downside volatility.
+- Value: earnings yield, free-cash-flow yield, book-to-market
+- Quality: ROE, operating margin, FCF margin, leverage
+- Growth: revenue growth, earnings growth, FCF growth
+- Momentum: total return and cross-sectional momentum
+- Volatility: annualized and downside volatility
 
-The framework does not prescribe a universal factor weighting. Directionality
-and weights are explicit inputs to the scoring layer so experiments can compare
-specifications without changing factor definitions.
+## Scoring
 
-For example, higher earnings yield is generally treated as more favorable in a
-value score, while higher leverage or volatility can be treated as less
-favorable. These are scoring choices, not properties of the raw measurements.
+percentile_score converts a factor into a cross-sectional score in [0, 1].
+
+Direction is explicit:
+- higher_is_better=True ranks larger values higher.
+- higher_is_better=False ranks smaller values higher.
+
+Composite scores use normalized non-negative weights.
+
+Factor calculations do not prescribe universal weights. Each research experiment must specify and record its weighting scheme.
+
+## Pipeline integration
+
+Factors → Percentile Scores → Composite Score → Top-N Screen → Portfolio Weights → Backtest
+
+## Research caution
+
+Factor scores are descriptive transformations of supplied data. They do not by themselves establish predictive power. Predictive claims require dated, leakage-controlled testing and appropriate robustness analysis.
