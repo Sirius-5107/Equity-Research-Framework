@@ -44,6 +44,8 @@ Universe / Market Data
 - tests/ — unit tests
 - docs/ — methodology and data documentation
 - research/ — experiment-specific artifacts
+  - research/experiments/01_momentum_baseline.md — frozen first empirical specification
+  - research/experiments/01_momentum_baseline.py — reproducible baseline runner
 - notebooks/ — exploratory analysis
 
 ## Status
